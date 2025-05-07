@@ -22,9 +22,10 @@ public class ReplyService {
     // TODO : 2단계 RestAPI 주소 변경 json 돌려주기 할때 void 변경하기
     @Transactional
     public void 댓글삭제(Integer id, Integer sessionUserId) {
-        Reply replyPS = replyRepository.findById(id);
+        Reply replyPS = replyRepository.findById(id)
+                .orElseThrow(() -> new Exception404("자원을 찾을 수 없습니다"));
         // Exception404
-        if (replyPS == null) throw new Exception404("자원을 찾을 수 없습니다");
+        // if (replyPS == null) throw new Exception404("자원을 찾을 수 없습니다");
         if (!replyPS.getUser().getId().equals(sessionUserId)) {
             throw new Exception403("권한이 없습니다");
         }
