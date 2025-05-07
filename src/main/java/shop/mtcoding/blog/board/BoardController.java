@@ -18,7 +18,7 @@ public class BoardController {
     private final HttpSession session;
 
     //update board_tb set title = ?, content = ?, is_pubic = ? where id = ?
-    @PutMapping("/board/{id}")
+    @PutMapping("/s/api/board/{id}")
     public @ResponseBody Resp<?> update(@PathVariable("id") Integer id, @Valid @RequestBody BoardRequest.UpdateDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         BoardResponse.DTO respDTO = boardService.글수정하기(reqDTO, id, sessionUser.getId());
@@ -26,14 +26,14 @@ public class BoardController {
         return Resp.ok(respDTO);
     }
 
-    @GetMapping("/board/{id}") //update-form
+    @GetMapping("/api/board/{id}") //update-form
     public @ResponseBody Resp<?> setBoardOne(@PathVariable("id") int id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         BoardResponse.DTO respDTO = boardService.글보기(id, sessionUser.getId());
         return Resp.ok(respDTO);
     }
 
-    @GetMapping("/board/{id}/detail")
+    @GetMapping("/api/board/{id}/detail")
     public @ResponseBody Resp<?> getBoardDetail(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Integer sessionUserId = (sessionUser == null ? null : sessionUser.getId());
@@ -43,7 +43,7 @@ public class BoardController {
 
     // localhost:8080?page=0
     // localhost:8080
-    @GetMapping("/")
+    @GetMapping({"/", "/api/board"}) // 일반적으로 index 페이지는 두 가지 주소를 사용함
     public @ResponseBody Resp<?> list(HttpServletRequest request,
                                       @RequestParam(required = false, value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(required = false, value = "keyword", defaultValue = "") String keyword) {
@@ -59,7 +59,7 @@ public class BoardController {
         return Resp.ok(respDTO);
     }
 
-    @PostMapping("/board") // save
+    @PostMapping("/s/api/board") // save
     public @ResponseBody Resp<?> save(@Valid @RequestBody BoardRequest.SaveDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         BoardResponse.DTO respDTO = boardService.글쓰기(reqDTO, sessionUser);

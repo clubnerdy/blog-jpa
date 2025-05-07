@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
-    @PostMapping("/user") // update
+    @PostMapping("/s/api/user") // update
     public String update(@Valid @RequestBody UserRequest.UpdateDTO updateDTO, Errors errors) { // RestAPI는 무조건 JSON으로 통신
         User sessionUser = (User) session.getAttribute("sessionUser");
         // TODO: JWT 이후에
